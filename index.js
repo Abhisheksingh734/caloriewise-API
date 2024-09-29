@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 // importing model
 const userModel = require("./models/userModel");
 const foodModel = require("./models/foodModel");
+const trackingModel = require("./models/trackingModel");
+const verifyToken = require("./verifyToken");
 
 // db connection
 mongoose
@@ -20,7 +22,7 @@ mongoose
 //express obj
 const app = express();
 
-// middleware
+// middleware to convert to json
 app.use(express.json());
 
 // endpoint for registering user
@@ -46,7 +48,6 @@ app.post("/register", (req, res) => {
 });
 
 //end point for login request
-
 app.post("/login", async (req, res) => {
   let userCred = req.body;
 
@@ -77,11 +78,10 @@ app.post("/login", async (req, res) => {
 });
 
 // end point to see all food
-
 app.get("/foods", verifyToken, async (req, res) => {
   try {
     let foods = await foodModel.find();
-    // console.log(foods);
+
     res.status(201).send(foods);
   } catch (e) {
     console.log(e);
@@ -91,22 +91,53 @@ app.get("/foods", verifyToken, async (req, res) => {
   }
 });
 
-//middleware
-
-function verifyToken(req, res, next) {
-  if (req.headers.authorization !== undefined) {
-    let token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, "nutrify", (err, data) => {
-      if (!err) {
-        next();
-      } else {
-        res.status(403).send({ message: "Invalid token" });
-      }
+//search food by name
+app.get("/foods/:name", verifyToken, async (req, res) => {
+  try {
+    let foods = await foodModel.find({
+      name: { $regex: req.params.name, $options: "i" },
     });
-  } else {
-    res.send({ message: "Please send auth token" });
+
+    if (foods.length !== 0) {
+      res.status(201).send(foods);
+    } else {
+      res.status(404).send({ message: "Food item not found" });
+    }
+  } catch (e) {
+    console.log(err);
+    res.status(500).send({ message: "Some problem with getting food name" });
   }
-}
+});
+
+// endpoint to track a food
+app.post("/track", verifyToken, async (req, res) => {
+  const trackData = req.body;
+  try {
+    let data = await trackingModel.create(trackData);
+
+    res.status(201).send({ message: "Food added" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Some problem with tracking data");
+  }
+});
+
+// end point to fetch all foods eaten by a person
+
+app.get("/track/:userId", verifyToken, async (req, res) => {
+  let userid = req.params.userId;
+
+  try {
+    let foods = await trackingModel
+      .find({ userId: userid })
+      .populate("userId")
+      .populate("foodId");
+    res.status(201).send(foods);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Some problem with tracking data");
+  }
+});
 
 app.listen(8000, () => {
   console.log("Server is up and running");
