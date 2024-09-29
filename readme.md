@@ -5,13 +5,25 @@ mongoose - connect to db
 bcryptjs - encrypt our password
 jsonwebtoken
 
+modules - collection of functionalities
+
+models - are objects that helps you connect with collection
+
+- creating userModel
+- generating token jwt
+
 end points
 
 - register
 - login
-- track foods
-- show my tracked foods
+- track foods (accessed with token)
+- show my tracked foods (accessed with token)
 
-modules - collection of functionalities
+will create a middleware to access those routes
 
-models - are objects that helps you connect with collection
+we send token with request headers
+
+adding middleware "verifytoken" to check
+
+- auth token is present?
+- auth token is correct?
