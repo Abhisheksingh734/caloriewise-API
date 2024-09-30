@@ -124,12 +124,15 @@ app.post("/track", verifyToken, async (req, res) => {
 
 // end point to fetch all foods eaten by a person
 
-app.get("/track/:userId", verifyToken, async (req, res) => {
+app.get("/track/:userId/:date", verifyToken, async (req, res) => {
   let userid = req.params.userId;
+  let date = new Date(req.params.date).toLocaleDateString();
+
+  console.log(date);
 
   try {
     let foods = await trackingModel
-      .find({ userId: userid })
+      .find({ userId: userid, eatenDate: date })
       .populate("userId")
       .populate("foodId");
     res.status(201).send(foods);
