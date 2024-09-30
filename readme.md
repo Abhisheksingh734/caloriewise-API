@@ -64,52 +64,14 @@ https://caloriewise-api.vercel.app/
 
 ## Endpoints
 
-### 1. User Registration
-  - POST `/user`
-  - Registers a new user.
-  - Request Body
-    ```
-     {
-         "name": "John Doe",
-         "email": "john@example.com",
-         "password": "password123",
-         "age": 25
-      };
-    ```
-
-### 2. User login
-  - POST `/login`
-  - Logs in a user and returns a JWT token.
-  - Request Body
-    ```
-     {
-        "email": "john@example.com",
-        "password": "password123"
-     }
-    ```
-
-### 3. Get All Foods
-  - GET `/foods` (Requires JWT)
-  - Returns a list of all available foods.
-
-### 4. Search Food by Name
-  - GET `/foods/:name` (Requires JWT)
-  - Searches for a food by name (case-insensitive).
-
-### 5. Track Food Consumption
-  - POST `/track` (Requires JWT)
-  - Tracks food consumption for a user.
-  - Request Body
-    ```
-     {
-        "userId": "USER_ID_HERE",
-        "foodId": "FOOD_ID_HERE",
-        "quantity": 2
-     }
-    ```
-### 6. Get Tracked Foods by User and Date
-  - GET `/track/:userId/:date` (Requires JWT).
-  - Retrieves all foods tracked by a user on a specific date.
+| **Endpoint**                  | **Method** | **Description**                                      | **Authentication** | **Request Body (Example)**                                                                                                                                                             |
+|-------------------------------|------------|------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/user`                        | POST       | Registers a new user                                 | No                 | `{ "name": "John Doe", "email": "john@example.com", "password": "password123", "age": 25 }`                                                                                             |
+| `/login`                       | POST       | Logs in a user and returns a JWT token               | No                 | `{ "email": "john@example.com", "password": "password123" }`                                                                                                                            |
+| `/foods`                       | GET        | Returns a list of all available foods                | Yes (JWT)          | N/A                                                                                                                                                                                    |
+| `/foods/:name`                 | GET        | Searches for a food by name (case-insensitive)        | Yes (JWT)          | N/A                                                                                                                                                                                    |
+| `/track`                       | POST       | Tracks food consumption for a user                   | Yes (JWT)          | `{ "userId": "USER_ID_HERE", "foodId": "FOOD_ID_HERE", "quantity": 2 }`                                                                                                                |
+| `/track/:userId/:date`         | GET        | Retrieves all foods tracked by a user on a specific date | Yes (JWT)          | N/A                                                                                                                                                                                    |
 
 
 ## Models
