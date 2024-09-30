@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status().send({ message: "Some problem" });
+    res.status(500).send({ message: "Some problem" });
   }
 });
 
@@ -103,7 +103,7 @@ app.get("/foods/:name", verifyToken, async (req, res) => {
     } else {
       res.status(404).send({ message: "Food item not found" });
     }
-  } catch (e) {
+  } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Some problem with getting food name" });
   }
@@ -128,7 +128,7 @@ app.get("/track/:userId/:date", verifyToken, async (req, res) => {
   let userid = req.params.userId;
   let date = new Date(req.params.date).toLocaleDateString();
 
-  console.log(date);
+  //   console.log(date);
 
   try {
     let foods = await trackingModel
