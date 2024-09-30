@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -11,7 +13,7 @@ const verifyToken = require("./verifyToken");
 
 // db connection
 mongoose
-  .connect("mongodb://localhost:27017/nutrify")
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("db connection successfull");
   })
