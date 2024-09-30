@@ -1,6 +1,7 @@
-# CalorieWise API
+# Calorie wise API 
+A simple RESTful API for managing users, food data, and tracking food consumption. 
+https://caloriewise-api.vercel.app/
 
-A simple RESTful API for managing users, food data, and tracking food consumption.
 
 ## Table of Contents
 
